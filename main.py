@@ -1,6 +1,7 @@
 import json
 from classifier.classify import classify
 from analysis.weakness_score import weakness
+from generator.practice_gen import gen_problems
 
 with open("data/submissions.json") as f:
     subs = json.load(f)
@@ -22,4 +23,7 @@ for sub in subs:
     classifications.append(res)
 
 scores = weakness(classifications)
-print(scores)
+# print(scores)
+
+result = gen_problems(scores)
+print(result)
