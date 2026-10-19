@@ -6,15 +6,8 @@ from generator.practice_gen import gen_problems
 with open("data/submissions.json") as f:
     subs = json.load(f)
 
-# sub = subs[0]
-
-# with open(sub["code_file"]) as f:
-#     code = f.read()
-
-# result = classify(sub["question"], code)
-# print(result)
-
 classifications = []
+
 for sub in subs:
     with open(sub["code_file"]) as f:
         code = f.read()
@@ -23,7 +16,17 @@ for sub in subs:
     classifications.append(res)
 
 scores = weakness(classifications)
-# print(scores)
 
-result = gen_problems(scores)
-print(result)
+weakest = None
+highest = 0
+
+for pattern in scores:
+    if scores[pattern] > highest:
+        weakest = pattern
+        highest = scores[pattern]
+
+print(f"Your weakest topic is: {weakest} ({highest: .1f})")
+
+problems = gen_problems(scores)
+for p in problems:
+    print(f"\n{p["title"]} ({p["difficulty"]})\n{p["description"]}")
